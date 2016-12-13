@@ -1,9 +1,9 @@
-package HW3.tests;
+package HW4.tests;
 
-import HW3.pages.CreatePlayerPage;
-import HW3.pages.EditPlayerPage;
-import HW3.pages.LoginPage;
-import HW3.pages.PlayerPage;
+import HW4.pages.CreatePlayerPage;
+import HW4.pages.EditPlayerPage;
+import HW4.pages.LoginPage;
+import HW4.pages.PlayerPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;

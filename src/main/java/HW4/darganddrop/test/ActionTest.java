@@ -1,10 +1,9 @@
-package HW3.darganddrop.test;
+package HW4.darganddrop.test;
 
-import HW3.darganddrop.page.ActionPage;
+import HW4.darganddrop.page.ActionPage;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

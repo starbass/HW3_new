@@ -1,7 +1,7 @@
-package HW3.tests;
+package HW4.tests;
 
-import HW3.pages.CreatePlayerPage;
-import HW3.pages.PlayerPage;
+import HW4.pages.CreatePlayerPage;
+import HW4.pages.PlayerPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -9,7 +9,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import HW3.pages.LoginPage;
+import HW4.pages.LoginPage;
 import org.testng.asserts.SoftAssert;
 
 import java.util.concurrent.TimeUnit;
