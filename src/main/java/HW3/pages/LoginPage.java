@@ -3,14 +3,31 @@ package HW3.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
+    @FindBy(id = "username")
+    private WebElement usernameInput;
+    @FindBy(id = "password")
+    private WebElement passwordInput;
+    @FindBy(id = "logIn")
+    private WebElement loginButton;
+    @FindBy(xpath = "//ul[@class='errors']/li")
+    private WebElement errorMsgElement;
+    @FindBy(xpath = ".//dd[@id ='username-element']//ul[@class='errors']/li")
+    private WebElement errorMsgEmailFieldElement;
+    @FindBy(xpath = ".//dd[@id ='password-element']//ul[@class='errors']/li")
+    private WebElement errorMsgPasswordFieldElement;
+
+
 
     private WebDriver driver;
     public static final String URL_LOGIN = "http://80.92.229.236:81/auth/login";
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
 
     public void open() {
@@ -25,36 +42,30 @@ public class LoginPage {
     }
 
     public void setUsername(String username) {
-        WebElement usernameInput = driver.findElement(By.id("username"));
         usernameInput.clear();
         usernameInput.sendKeys(username);
     }
 
     public void setPassword(String password) {
-        WebElement passwordInput = driver.findElement(By.id("password"));
         passwordInput.clear();
         passwordInput.sendKeys(password);
     }
 
     public void clickOnLogin() {
-        WebElement loginButton = driver.findElement(By.id("logIn"));
         loginButton.click();
     }
 
     public String getErrorMessage() {
-        WebElement errorMsgElement = driver.findElement(By.xpath("//ul[@class='errors']/li"));
         String errorMsg = errorMsgElement.getText();
         return errorMsg;
     }
 
     public String getErrorMessageEmptyUsernameFields() {
-        WebElement errorMsgEmailFieldElement = driver.findElement(By.xpath(".//dd[@id ='username-element']//ul[@class='errors']/li"));
         String errorEmailMsg = errorMsgEmailFieldElement.getText();
         return errorEmailMsg;
     }
 
     public String getErrorMessageEmptyPasswordFields() {
-        WebElement errorMsgPasswordFieldElement = driver.findElement(By.xpath(".//dd[@id ='password-element']//ul[@class='errors']/li"));
         String errorPasswordMsg = errorMsgPasswordFieldElement.getText();
         return errorPasswordMsg;
     }

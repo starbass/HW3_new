@@ -160,25 +160,4 @@ public class ActionPage {
         action.dragAndDrop(sourceElement1, elementPositionNumber7)
                 .perform();
     }
-
-
-
-
-
-
-    /*public boolean isDropped() {
-        return trashElement.getAttribute("class").contains("ui-state-highlight");
-    }
-
-    public String getTargetText() {
-        return trashElement.findElement(By.xpath(".//p")).getText();
-    }
-
-    public void switchToFrame() {
-        driver.switchTo().frame(driver.findElement(By.className("demo-frame")));
-    }
-
-    public void switchToMainPage() {
-        driver.switchTo().defaultContent();
-    }*/
 }

@@ -32,7 +32,7 @@ public class ActionTest {
 
     @Test
     public void dragAndDropTest() {
-        /*todo
+        /*
         1. Open page.
         2. Perform drag and drop.
         2. Check text and class attribute.
