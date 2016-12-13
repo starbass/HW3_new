@@ -4,16 +4,38 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class PlayerPage {
+    @FindBy(id = "723a925886__login")
+    private WebElement searchFieldInput;
+    @FindBy(xpath = ".//input[@name='search' and @type='button']")
+    private WebElement searchButton;
+    @FindBy(xpath = ".//*[@name='reset']")
+    private WebElement resetButton;
+    @FindBy(xpath = ".//*[@id='723a925886__email']")
+    private WebElement emailInput;
+    @FindBy(xpath = ".//*[@id='723a925886__city']")
+    private WebElement cityInput;
+    @FindBy(xpath = ".//*[@id='723a925886__reg_date_from']")
+    private WebElement fromRegDateInput;
+    @FindBy(xpath = ".//*[@id='723a925886__firstname']")
+    private WebElement firstNameInput;
+    @FindBy(xpath = ".//*[@id='723a925886__lastname']")
+    private WebElement lastNameInput;
+    @FindBy(xpath = ".//*[@id='723a925886__reg_date_to']")
+    private WebElement tillRegDateInput;
+
 
     private WebDriver driver;
     public static final String URL_PLAYERS = "http://80.92.229.236:81/players";
 
     public PlayerPage(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
 
     public void open() {
@@ -21,13 +43,11 @@ public class PlayerPage {
     }
 
     public void setPlayerNameInSearchField(String userName) {
-        WebElement searchFieldInput = driver.findElement(By.id("723a925886__login"));
         searchFieldInput.clear();
         searchFieldInput.sendKeys(userName);
     }
 
     public void clickOnSearch() {
-        WebElement searchButton = driver.findElement(By.xpath(".//input[@name='search' and @type='button']"));
         searchButton.click();
     }
 
@@ -43,37 +63,30 @@ public class PlayerPage {
     }
 
     public void clickOnResetBtn(){
-        WebElement resetButton = driver.findElement(By.xpath(".//*[@name='reset']"));
         resetButton.click();
     }
 
     public void performSearchByEmail(String email) {
-        WebElement emailInput = driver.findElement(By.xpath(".//*[@id='723a925886__email']"));
         emailInput.sendKeys(email);
     }
 
     public void performSearchByCity(String city) {
-        WebElement cityInput = driver.findElement(By.xpath(".//*[@id='723a925886__city']"));
         cityInput.sendKeys(city);
     }
 
     public void performSearchByFromRegDate(String date) {
-        WebElement fromRegDateInput = driver.findElement(By.xpath(".//*[@id='723a925886__reg_date_from']"));
         fromRegDateInput.sendKeys(date);
     }
 
     public void performSearchByFirstName(String firstName) {
-        WebElement firstNameInput = driver.findElement(By.xpath(".//*[@id='723a925886__firstname']"));
         firstNameInput.sendKeys(firstName);
     }
 
     public void performSearchByLastName(String lastName) {
-        WebElement lastNameInput = driver.findElement(By.xpath(".//*[@id='723a925886__lastname']"));
         lastNameInput.sendKeys(lastName);
     }
 
     public void performSearchByTillRegDate(String date) {
-        WebElement tillRegDateInput = driver.findElement(By.xpath(".//*[@id='723a925886__reg_date_to']"));
         tillRegDateInput.sendKeys(date);
     }
 
