@@ -88,7 +88,7 @@ public class CRUDUserTests {
      * 2. Click on edit button near user name.
      * 3. Check all user name fields.
      */
-    @Test
+    @Test(dependsOnMethods = "createUserTest", alwaysRun = true)
     public void searchAndPreviewPlayerTest(){
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();
@@ -114,7 +114,7 @@ public class CRUDUserTests {
      * 4. Save changes.
      * 5. Preview changes.
      */
-    @Test
+    @Test(dependsOnMethods = "searchAndPreviewPlayerTest", alwaysRun = true)
     public void editPlayerTest(){
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();
@@ -135,7 +135,7 @@ public class CRUDUserTests {
      * 3. Perform search.
      * 4. Verify that system was not found any user with current user name.
      */
-    @Test
+    @Test(dependsOnMethods = "editPlayerTest", alwaysRun = true)
     public void deletePlayerTest() {
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();

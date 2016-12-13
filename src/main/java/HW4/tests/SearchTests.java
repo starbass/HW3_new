@@ -72,7 +72,7 @@ public class SearchTests {
      * 6. To fill a value in Last name field. Click Search bnt and Reset btn
      * 7. To fill a value in Reg Data Till field. Click Search bnt and Reset btn
      */
-    @Test
+    @Test(dependsOnMethods = "performSearchByFirstName", alwaysRun = true)
     public void searchPlayerByFilterFields(){
 
         playerPage.performSearchByEmail(email);

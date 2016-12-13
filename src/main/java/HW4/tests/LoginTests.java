@@ -33,7 +33,7 @@ public class LoginTests {
     @BeforeMethod
     public void beforeMethod() {
         loginPage = new LoginPage(driver);
-        loginPage.open(); //open poker URL
+        loginPage.open();
         softAssert = new SoftAssert();
     }
 
@@ -71,7 +71,7 @@ public class LoginTests {
      * 7. Verify that title of the page equals to "Login"
      * 8. Verify actualMsg and expectedMsg
      * */
-    @Test
+    @Test(dependsOnMethods = "negativeTestWrongPasssord", alwaysRun = true)
     public void negativeTestWrongLogin() {
         loginPage.setUsername("admin123");
         loginPage.setPassword("123");
@@ -95,7 +95,7 @@ public class LoginTests {
      * 7. Verify that title of the page equals to "Login"
      * 8. Verify actualMsg and expectedMsg
      * */
-    @Test
+    @Test(dependsOnMethods = "negativeTestWrongLogin", alwaysRun = true)
     public void negativeTestEmptyFields() {
         loginPage.setUsername("");
         loginPage.setPassword("");
@@ -119,7 +119,7 @@ public class LoginTests {
      * 4. Verify that URL equals to Login Page URL
      * 5. Verify that title of the page equals to "Login"
      * */
-    @Test
+    @Test(dependsOnMethods = "negativeTestEmptyFields", alwaysRun = true)
     public void positiveTest() {
         loginPage.setUsername("admin");
         loginPage.setPassword("123");
