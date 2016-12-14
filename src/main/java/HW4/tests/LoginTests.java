@@ -3,10 +3,7 @@ package HW4.tests;
 import HW4.pages.PlayerPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import HW4.pages.LoginPage;
 import org.testng.asserts.SoftAssert;
 
@@ -37,6 +34,24 @@ public class LoginTests {
         softAssert = new SoftAssert();
     }
 
+    @DataProvider
+    public Object[][] negativeLoginData() {
+        return new Object[][] {
+                {"admin", "1234", "Login", "Invalid username or password"},
+                {"admin123", "123", "Login", "Invalid username or password"}
+        };
+    }
+    @DataProvider
+    public Object[][] nullLoginData() {
+        return new Object[][] {
+                {"", "", "Login", "Value is required and can't be empty"} };
+    }
+    @DataProvider
+    public Object[][] positiveLoginData() {
+        return new Object[][] {
+                {"admin", "123", "Players"} };
+    }
+
     /**
      * Steps:
      * 1. Set "admin" to username field
@@ -48,15 +63,14 @@ public class LoginTests {
      * 7. Verify that title of the page equals to "Login"
      * 8. Verify actualMsg and expectedMsg
      * */
-    @Test
-    public void negativeTestWrongPasssord() {
-        loginPage.setUsername("admin");
-        loginPage.setPassword("12345");
+    @Test(dataProvider = "negativeLoginData")
+    public void negativeTestWrongPasssord(String username, String password, String title, String expectedMsg) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
         loginPage.clickOnLogin();
-        String expectedMsg = "Invalid username or password";
         String actualMsg = loginPage.getErrorMessage();
         softAssert.assertEquals(driver.getCurrentUrl(), LoginPage.URL_LOGIN, "You are NOT on login page.");
-        softAssert.assertEquals(driver.getTitle(), "Login", "Wrong title after unsuccessful login");
+        softAssert.assertEquals(driver.getTitle(), title, "Wrong title after unsuccessful login");
         softAssert.assertEquals(actualMsg, expectedMsg, "Validation error message is not valid.");
         softAssert.assertAll();
     }
@@ -71,15 +85,14 @@ public class LoginTests {
      * 7. Verify that title of the page equals to "Login"
      * 8. Verify actualMsg and expectedMsg
      * */
-    @Test(dependsOnMethods = "negativeTestWrongPasssord", alwaysRun = true)
-    public void negativeTestWrongLogin() {
-        loginPage.setUsername("admin123");
-        loginPage.setPassword("123");
+    @Test(dependsOnMethods = "negativeTestWrongPasssord", alwaysRun = true, dataProvider = "negativeLoginData")
+    public void negativeTestWrongLogin(String username, String password, String title, String expectedMsg) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
         loginPage.clickOnLogin();
-        String expectedMsg = "Invalid username or password";
         String actualMsg = loginPage.getErrorMessage();
         softAssert.assertEquals(driver.getCurrentUrl(), LoginPage.URL_LOGIN, "You are NOT on login page.");
-        softAssert.assertEquals(driver.getTitle(), "Login", "Wrong title after unsuccessful login");
+        softAssert.assertEquals(driver.getTitle(), title, "Wrong title after unsuccessful login");
         softAssert.assertEquals(actualMsg, expectedMsg, "Validation error message is not valid.");
         softAssert.assertAll();
 
@@ -95,19 +108,15 @@ public class LoginTests {
      * 7. Verify that title of the page equals to "Login"
      * 8. Verify actualMsg and expectedMsg
      * */
-    @Test(dependsOnMethods = "negativeTestWrongLogin", alwaysRun = true)
-    public void negativeTestEmptyFields() {
-        loginPage.setUsername("");
-        loginPage.setPassword("");
+    @Test(dependsOnMethods = "negativeTestWrongLogin", alwaysRun = true, dataProvider = "nullLoginData")
+    public void negativeTestEmptyFields(String username, String password, String title, String expectedMsg) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
         loginPage.clickOnLogin();
-        String expectedEmailMsg = "Value is required and can't be empty";
-        String expectedPasswordMsg = "Value is required and can't be empty";
-        String actualEmailMsg = loginPage.getErrorMessageEmptyUsernameFields();
-        String actualPasswordMsg = loginPage.getErrorMessageEmptyPasswordFields();
+        String actualMsg = loginPage.getErrorMessage();
         softAssert.assertEquals(driver.getCurrentUrl(), LoginPage.URL_LOGIN, "You are NOT on login page.");
-        softAssert.assertEquals(driver.getTitle(), "Login", "Wrong title after unsuccessful login");
-        softAssert.assertEquals(actualEmailMsg, expectedEmailMsg, "Validation error message is not valid.");
-        softAssert.assertEquals(actualPasswordMsg, expectedPasswordMsg, "Validation error message is not valid.");
+        softAssert.assertEquals(driver.getTitle(), title, "Wrong title after unsuccessful login");
+        softAssert.assertEquals(actualMsg, expectedMsg, "Validation error message is not valid.");
         softAssert.assertAll();
 
     }
@@ -119,12 +128,12 @@ public class LoginTests {
      * 4. Verify that URL equals to Login Page URL
      * 5. Verify that title of the page equals to "Login"
      * */
-    @Test(dependsOnMethods = "negativeTestEmptyFields", alwaysRun = true)
-    public void positiveTest() {
-        loginPage.setUsername("admin");
-        loginPage.setPassword("123");
+    @Test(dependsOnMethods = "negativeTestEmptyFields", alwaysRun = true, dataProvider = "positiveLoginData")
+    public void positiveTest(String username, String password, String title) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
         loginPage.clickOnLogin();
-        softAssert.assertEquals(driver.getTitle(), "Players", "Wrong title after login");
+        softAssert.assertEquals(driver.getTitle(), title, "Wrong title after login");
         softAssert.assertEquals(driver.getCurrentUrl(), PlayerPage.URL_PLAYERS, "Wrong url.");
         softAssert.assertEquals(driver.getCurrentUrl(), PlayerPage.URL_PLAYERS, "You are still on login page.");
         softAssert.assertAll();
