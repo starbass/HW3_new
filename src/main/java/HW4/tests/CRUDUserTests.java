@@ -7,10 +7,7 @@ import HW4.pages.PlayerPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 import java.util.concurrent.TimeUnit;
@@ -29,7 +26,7 @@ public class CRUDUserTests {
     public final String city = RandomStringUtils.randomAlphanumeric(8);
     public final String address = RandomStringUtils.randomAlphanumeric(8);
     public final String phone = RandomStringUtils.randomNumeric(8);
-    //variables for player edit
+    //variables for edit player
     public final String newRandomValue = RandomStringUtils.randomAlphanumeric(9);
     public final String newEmail = newRandomValue + "@gmail.com";
     public final String newFirstName = RandomStringUtils.randomAlphanumeric(9);
@@ -54,6 +51,34 @@ public class CRUDUserTests {
         softAssert = new SoftAssert();
     }
 
+    @DataProvider
+    public Object[][] createUserData() {
+        return new Object[][] {
+                { userName, email, randomValue, firstName, lastName,
+                        city, address, phone}
+        };
+    }
+
+    @DataProvider
+    public Object[][] searchAndPreviewPlayerData() {
+        return new Object[][] {
+                { userName}
+        };
+    }
+    @DataProvider
+    public Object[][] editPlayerData() {
+        return new Object[][] {
+                { userName, newEmail, newFirstName, newLastName,
+                        newCity, newAddress, newPhone}
+        };
+    }
+    @DataProvider
+    public Object[][] deletePlayerData() {
+        return new Object[][] {
+                { userName}
+        };
+    }
+
     /**
      * Steps:
      * 1. Open Insert page.
@@ -62,8 +87,9 @@ public class CRUDUserTests {
      * 4. Check title.
      * 5. Verify url.
      */
-    @Test
-    public void createUserTest() {
+    @Test(dataProvider = "createUserData")
+    public void createUserTest(String userName, String email, String randomValue, String firstName, String lastName,
+                               String city, String address, String phone) {
         CreatePlayerPage createPlayerPage = playerPage.clickOnInsert();
         softAssert.assertEquals(driver.getCurrentUrl(), CreatePlayerPage.URL_INSERT, "You are NOT on insert page.");
         softAssert.assertEquals(driver.getTitle(), "Players - Insert", "Wrong title after click Insert btn");
@@ -88,8 +114,8 @@ public class CRUDUserTests {
      * 2. Click on edit button near user name.
      * 3. Check all user name fields.
      */
-    @Test(dependsOnMethods = "createUserTest", alwaysRun = true)
-    public void searchAndPreviewPlayerTest(){
+    @Test(dependsOnMethods = "createUserTest", alwaysRun = true, dataProvider = "searchAndPreviewPlayerData")
+    public void searchAndPreviewPlayerTest(String userName){
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();
         softAssert.assertEquals(driver.getCurrentUrl(), PlayerPage.URL_PLAYERS, "You are NOT on players page.");
@@ -114,8 +140,9 @@ public class CRUDUserTests {
      * 4. Save changes.
      * 5. Preview changes.
      */
-    @Test(dependsOnMethods = "searchAndPreviewPlayerTest", alwaysRun = true)
-    public void editPlayerTest(){
+    @Test(dependsOnMethods = "searchAndPreviewPlayerTest", alwaysRun = true, dataProvider = "editPlayerData")
+    public void editPlayerTest(String userName, String newEmail, String newFirstName, String newLastName,
+                               String newCity, String newAddress, String newPhone){
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();
         EditPlayerPage editPlayerPage = playerPage.clickOnEditBtnNear(userName);
@@ -135,8 +162,8 @@ public class CRUDUserTests {
      * 3. Perform search.
      * 4. Verify that system was not found any user with current user name.
      */
-    @Test(dependsOnMethods = "editPlayerTest", alwaysRun = true)
-    public void deletePlayerTest() {
+    @Test(dependsOnMethods = "editPlayerTest", alwaysRun = true, dataProvider = "deletePlayerData")
+    public void deletePlayerTest(String userName) {
         playerPage.setPlayerNameInSearchField(userName);
         playerPage.clickOnSearch();
         playerPage.clickOnDeleteBtnNear(userName);
