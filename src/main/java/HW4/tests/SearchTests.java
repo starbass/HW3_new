@@ -5,10 +5,7 @@ import HW4.pages.PlayerPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import HW4.pages.LoginPage;
 import org.testng.asserts.SoftAssert;
 
@@ -28,6 +25,13 @@ public class SearchTests {
     public final String city = RandomStringUtils.randomAlphanumeric(8);
     public final String address = RandomStringUtils.randomAlphanumeric(8);
     public final String phone = RandomStringUtils.randomNumeric(8);
+
+    @DataProvider
+    public Object[][] searchData() {
+        return new Object[][] {
+                { email, city, "13-12-16", firstName, lastName, "13-12-16"}
+        };
+    }
 
     @BeforeTest
     public void beforeTest() {
@@ -72,8 +76,9 @@ public class SearchTests {
      * 6. To fill a value in Last name field. Click Search bnt and Reset btn
      * 7. To fill a value in Reg Data Till field. Click Search bnt and Reset btn
      */
-    @Test(dependsOnMethods = "performSearchByFirstName", alwaysRun = true)
-    public void searchPlayerByFilterFields(){
+    @Test(dependsOnMethods = "performSearchByFirstName", alwaysRun = true, dataProvider = "searchData")
+    public void searchPlayerByFilterFields(String email, String city, String fromRegDate, String firstName,
+                                           String lastName, String tillRegDate){
 
         playerPage.performSearchByEmail(email);
         playerPage.clickOnSearch();
@@ -83,7 +88,7 @@ public class SearchTests {
         playerPage.clickOnSearch();
         playerPage.clickOnResetBtn();
 
-        playerPage.performSearchByFromRegDate("13-12-2016");//todo: change date to real dae of user creation (current date)
+        playerPage.performSearchByFromRegDate(fromRegDate);//todo: change date to real dae of user creation (current date)
         playerPage.clickOnSearch();
         playerPage.clickOnResetBtn();
 
@@ -95,7 +100,7 @@ public class SearchTests {
         playerPage.clickOnSearch();
         playerPage.clickOnResetBtn();
 
-        playerPage.performSearchByTillRegDate("13-12-2016");//todo: change date to real dae of user creation (current date)
+        playerPage.performSearchByTillRegDate(tillRegDate);// 13-12-2016 todo: change date to real dae of user creation (current date)
         playerPage.clickOnSearch();
         playerPage.clickOnResetBtn();
         softAssert.assertAll();
